@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aneema Rajapaksha · Software Engineering Portfolio</title>
+    <!-- Font Awesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        /* ----- DARK MODE FIRST ----- */
+        :root {
+            --bg-dark: #0D1117;
+            --bg-darker: #010409;
+            --bg-card: #161B22;
+            --text-light: #E6EDF3;
+            --text-muted: #8B949E;
+            --border-dark: #30363D;
+            --primary-blue: #58A6FF;
+            --primary-hover: #79C0FF;
+            --teal: #39F0D5;
+            --teal-hover: #56D4DD;
+            --accent-purple: #D2A8FF;
+            --accent-pink: #FF7B72;
+            --gradient-start: #58A6FF;
+            --gradient-middle: #D2A8FF;
+            --gradient-end: #FF7B72;
+            --success: #3FB950;
+            --warning: #D29922;
+            --error: #F85149;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+            --shadow-md: 0 4px 8px rgba(0,0,0,0.5);
+            --shadow-lg: 0 12px 20px rgba(0,0,0,0.6);
+            --shadow-xl: 0 24px 40px rgba(0,0,0,0.7);
+            --glow: 0 0 30px rgba(88,166,255,0.25);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-full: 9999px;
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2.5rem;
+            --space-xl: 4rem;
+            --space-xxl: 6rem;
+        }
+        .light-mode {
+            --bg-dark: #FAFBFC;
+            --bg-darker: #F6F8FA;
+            --bg-card: #FFFFFF;
+            --text-light: #0D1117;
+            --text-muted: #57606A;
+            --border-dark: #D8DEE4;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 8px rgba(0,0,0,0.12);
+            --shadow-lg: 0 12px 20px rgba(0,0,0,0.15);
+            --shadow-xl: 0 24px 40px rgba(0,0,0,0.18);
+            --glow: 0 0 30px rgba(88,166,255,0.15);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(88,166,255,0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(210,168,255,0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(255,123,114,0.04) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-md); }
+        section { padding: var(--space-xxl) 0; }
+
+        h1, h2, h3, h4 { font-weight: 800; line-height: 1.1; margin-bottom: var(--space-md); }
+        h1 {
+            font-size: 4.5rem;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% auto;
+            animation: gradient 3s ease infinite;
+        }
+        h2 { font-size: 3rem; color: var(--text-light); }
+        h2 .gradient-text {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        h3 { font-size: 2rem; }
+        p { color: var(--text-muted); margin-bottom: var(--space-md); font-size: 1.125rem; }
+        .highlight { color: var(--teal); font-weight: 600; }
+
+        /* navbar */
+        .navbar {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(13,17,23,0.85); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(88,166,255,0.1);
+            z-index: 1000; padding: var(--space-sm) 0; transition: all 0.3s;
+        }
+        .light-mode .navbar { background: rgba(255,255,255,0.85); border-bottom-color: rgba(0,0,0,0.08); }
+        .navbar.scrolled { padding: var(--space-xs) 0; background: rgba(13,17,23,0.95); box-shadow: var(--shadow-lg); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo {
+            font-weight: 800; font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; letter-spacing: -0.5px;
+        }
+        .nav-links { display: flex; gap: var(--space-xl); align-items: center; }
+        .nav-links a {
+            text-decoration: none; color: var(--text-muted); font-weight: 500;
+            transition: all 0.3s; position: relative; padding: var(--space-xs) 0;
+        }
+        .nav-links a:hover { color: var(--text-light); }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 0; height: 2px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-middle));
+            transition: width 0.3s;
+        }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-buttons { display: flex; gap: var(--space-sm); align-items: center; }
+
+        /* buttons */
+        .btn {
+            padding: 14px 28px; border-radius: var(--radius-md); font-weight: 600;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+            transition: all 0.3s; border: none; cursor: pointer; position: relative; overflow: hidden;
+        }
+        .btn::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        .btn:hover::before { left: 100%; }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle));
+            color: white; box-shadow: var(--shadow-lg), var(--glow);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: var(--shadow-xl), 0 0 30px rgba(59,130,246,0.4); }
+        .btn-secondary {
+            background: transparent; color: var(--text-light); border: 2px solid rgba(88,166,255,0.35);
+        }
+        .btn-secondary:hover { background: rgba(88,166,255,0.12); border-color: var(--primary-blue); transform: translateY(-3px); }
+        .btn-outline {
+            background: transparent; color: var(--text-muted); border: 1px solid var(--border-dark);
+        }
+        .btn-outline:hover { border-color: var(--primary-blue); color: var(--primary-blue); transform: translateY(-2px); }
+
+        #theme-toggle {
+            background: transparent; border: 1px solid var(--border-dark); border-radius: var(--radius-md);
+            width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: var(--text-muted); transition: 0.3s;
+        }
+        #theme-toggle:hover { border-color: var(--primary-blue); color: var(--primary-blue); transform: rotate(15deg); background: rgba(88,166,255,0.08); }
+
+        /* welcome cube / viz */
+        .visualization-container { position: relative; height: 500px; display: flex; align-items: center; justify-content: center; }
+        .floating-cube { position: relative; width: 300px; height: 300px; transform-style: preserve-3d; animation: float 6s ease-in-out infinite; }
+        .cube-face {
+            position: absolute; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(88,166,255,0.15), rgba(210,168,255,0.15));
+            border: 1px solid rgba(88,166,255,0.4); border-radius: var(--radius-md); backdrop-filter: blur(10px);
+            display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: var(--primary-blue);
+        }
+        .front { transform: translateZ(150px); } .back { transform: rotateY(180deg) translateZ(150px); }
+        .right { transform: rotateY(90deg) translateZ(150px); } .left { transform: rotateY(-90deg) translateZ(150px); }
+        .top { transform: rotateX(90deg) translateZ(150px); } .bottom { transform: rotateX(-90deg) translateZ(150px); }
+        .orbiting-element {
+            position: absolute; width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            animation: orbit 15s linear infinite; background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle));
+            color: white; font-size: 1.8rem;
+        }
+        .orb-1 { top: 50px; left: 50px; animation-delay: 0s; }
+        .orb-2 { top: 100px; right: 100px; animation-delay: -5s; }
+        .orb-3 { bottom: 100px; left: 100px; animation-delay: -10s; }
+
+        /* welcome specific */
+        .welcome-container { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); align-items: center; }
+        .welcome-badge {
+            display: inline-block; background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle));
+            color: white; padding: 8px 20px; border-radius: var(--radius-full); font-size: 0.875rem; font-weight: 600; letter-spacing: 1px; margin-bottom: var(--space-lg); text-transform: uppercase;
+        }
+        .subtitle { font-size: 1.5rem; color: var(--teal); margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-sm); }
+        .subtitle::after { content: ''; flex: 1; height: 2px; background: linear-gradient(90deg, var(--teal), transparent); }
+        .tagline { font-size: 1.25rem; color: var(--text-muted); margin-bottom: var(--space-xl); max-width: 600px; }
+
+        /* about */
+        #about { background: linear-gradient(180deg, var(--bg-dark) 0%, rgba(22,27,34,0.5) 100%); }
+        .about-container { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); align-items: center; }
+        .image-frame {
+            width: 100%; max-width: 400px; aspect-ratio: 1; border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, rgba(88,166,255,0.15), rgba(210,168,255,0.15)); padding: 8px; margin: 0 auto;
+        }
+        .image-frame img { width: 100%; height: 100%; border-radius: calc(var(--radius-lg)-4px); object-fit: cover; border: 4px solid var(--bg-darker); background: #334155; display: block; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--space-md); margin-top: var(--space-xl); }
+        .stat-card { background: var(--bg-card); padding: var(--space-md); border-radius: var(--radius-md); border: 1px solid var(--border-dark); text-align: center; transition: all 0.3s; }
+        .stat-card:hover { transform: translateY(-6px); border-color: var(--primary-blue); box-shadow: 0 0 20px rgba(88,166,255,0.2); }
+        .stat-number { font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--space-xs); }
+
+        /* projects */
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: var(--space-lg); margin-top: var(--space-xl); }
+        .project-card { background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-dark); transition: all 0.35s cubic-bezier(0.23, 1, 0.320, 1); }
+        .project-card:hover { transform: translateY(-12px); border-color: var(--primary-blue); box-shadow: var(--shadow-xl), 0 0 40px rgba(88,166,255,0.2); }
+        .project-image { height: 160px; background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle)); opacity: 0.8; }
+        .project-content { padding: var(--space-lg); }
+        .project-tech { display: flex; flex-wrap: wrap; gap: 8px; margin: var(--space-md) 0; }
+        .tech-tag { background: linear-gradient(135deg, rgba(88,166,255,0.2), rgba(210,168,255,0.2)); color: var(--primary-blue); padding: 6px 16px; border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 500; border: 1px solid rgba(88,166,255,0.3); }
+        .project-links { display: flex; gap: var(--space-sm); margin-top: var(--space-md); }
+
+        /* certificates section */
+        #certificates { background: linear-gradient(180deg, rgba(22,27,34,0.5) 0%, var(--bg-dark) 100%); }
+        .certificates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-xl);
+        }
+        .cert-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border-dark);
+            transition: all 0.35s cubic-bezier(0.23, 1, 0.320, 1);
+            cursor: pointer;
+        }
+        .cert-card:hover {
+            transform: translateY(-12px);
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-xl), 0 0 40px rgba(88,166,255,0.2);
+        }
+        .cert-image {
+            height: 200px;
+            background: linear-gradient(135deg, rgba(88,166,255,0.2), rgba(210,168,255,0.2));
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cert-image i {
+            font-size: 4rem;
+            color: var(--primary-blue);
+            opacity: 0.9;
+            animation: pulse 2s infinite;
+        }
+        .cert-image::after {
+            content: '📜';
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 2rem;
+            opacity: 0.3;
+            transform: rotate(15deg);
+        }
+        .cert-content {
+            padding: var(--space-lg);
+        }
+        .cert-title {
+            font-size: 1.3rem;
+            margin-bottom: var(--space-xs);
+            color: var(--text-light);
+        }
+        .cert-issuer {
+            color: var(--primary-blue);
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+        .cert-date {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: var(--space-sm);
+        }
+        .cert-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: var(--space-sm);
+        }
+        .cert-skill-tag {
+            background: rgba(88,166,255,0.1);
+            border: 1px solid rgba(88,166,255,0.25);
+            color: var(--primary-blue);
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* skills */
+        #skills { background: linear-gradient(180deg, var(--bg-dark) 0%, rgba(22,27,34,0.5) 100%); }
+        .skills-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: var(--space-xl); margin-top: var(--space-xl); }
+        .skill-category { background: var(--bg-card); padding: var(--space-lg); border-radius: var(--radius-lg); border: 1px solid var(--border-dark); transition: all 0.3s; }
+        .skill-category:hover { border-color: var(--primary-blue); box-shadow: 0 0 20px rgba(88,166,255,0.15); }
+        .skill-category h3 { display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-lg); }
+        .skill-category i { font-size: 1.8rem; background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle)); -webkit-backgroundclip: text; -webkit-text-fill-color: transparent; }
+        .skill-list { display: flex; flex-wrap: wrap; gap: 12px; }
+        .skill-item { background: rgba(88,166,255,0.1); border: 1px solid rgba(88,166,255,0.25); color: var(--primary-blue); padding: 8px 18px; border-radius: var(--radius-full); font-weight: 500; transition: 0.3s; }
+        .skill-item:hover { background: var(--primary-blue); color: white; transform: scale(1.05); box-shadow: 0 0 15px rgba(88,166,255,0.4); }
+
+        /* contact */
+        .contact-container { display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-xl); margin-top: var(--space-xl); }
+        .contact-card { background: var(--bg-card); padding: var(--space-lg); border-radius: var(--radius-lg); border: 1px solid var(--border-dark); transition: all 0.3s; }
+        .contact-card:hover { transform: translateX(12px); border-color: var(--primary-blue); box-shadow: 0 0 20px rgba(88,166,255,0.2); }
+        .contact-icon { width: 60px; height: 60px; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle)); display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-md); font-size: 1.8rem; color: white; }
+        #contact-form { display: flex; flex-direction: column; gap: var(--space-md); }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group input, .form-group textarea { 
+            padding: 16px; border: 2px solid var(--border-dark); border-radius: var(--radius-md); 
+            background: var(--bg-card); color: var(--text-light); font-size: 1rem; transition: all 0.3s; 
+            width: 100%;
+        }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary-blue); box-shadow: 0 0 0 4px rgba(88,166,255,0.15); }
+        .form-status {
+            margin-top: var(--space-sm);
+            padding: var(--space-sm);
+            border-radius: var(--radius-md);
+            display: none;
+        }
+        .form-status.success {
+            display: block;
+            background: rgba(63, 185, 80, 0.15);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+        .form-status.error {
+            display: block;
+            background: rgba(248, 81, 73, 0.15);
+            border: 1px solid var(--error);
+            color: var(--error);
+        }
+
+        /* footer */
+        footer { background: linear-gradient(180deg, var(--bg-darker) 0%, rgba(5,8,13,0.8) 100%); padding: var(--space-xl) 0; border-top: 1px solid var(--border-dark); }
+        .footer-content { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: var(--space-xl); margin-bottom: var(--space-xl); }
+        .social-links { display: flex; gap: var(--space-sm); margin-top: var(--space-md); }
+        .social-link {
+            width: 48px; height: 48px; border-radius: var(--radius-md); background: var(--bg-card);
+            display: flex; align-items: center; justify-content: center; color: var(--text-muted);
+            border: 1px solid var(--border-dark); transition: all 0.3s; font-size: 1.4rem;
+        }
+        .social-link:hover { background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle)); color: white; border-color: transparent; transform: translateY(-4px) scale(1.12); box-shadow: 0 0 20px rgba(88,166,255,0.3); }
+        .copyright { text-align: center; padding-top: var(--space-lg); border-top: 1px solid var(--border-dark); color: var(--text-muted); }
+
+        /* modal for certificate preview */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--bg-card);
+            padding: var(--space-xl);
+            border-radius: var(--radius-lg);
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            border: 1px solid var(--border-dark);
+            box-shadow: var(--shadow-xl);
+        }
+        .modal-close {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .modal-close:hover {
+            color: var(--error);
+            transform: scale(1.2);
+        }
+        .cert-preview-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(88,166,255,0.2), rgba(210,168,255,0.2));
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cert-preview-image i {
+            font-size: 5rem;
+            color: var(--primary-blue);
+        }
+        .cert-preview-details h3 {
+            color: var(--text-light);
+            margin-bottom: var(--space-xs);
+        }
+        .cert-preview-details p {
+            margin-bottom: var(--space-xs);
+        }
+
+        /* animations */
+        @keyframes float { 0%,100%{ transform:translateY(0) rotate(0deg); } 50%{ transform:translateY(-20px) rotate(5deg); } }
+        @keyframes orbit { 0%{ transform: rotate(0deg) translateX(150px) rotate(0deg); } 100%{ transform: rotate(360deg) translateX(150px) rotate(-360deg); } }
+        @keyframes gradient { 0%,100%{ background-position:0% 50%; } 50%{ background-position:100% 50%; } }
+
+        @media (max-width:1024px) {
+            h1 { font-size: 3.5rem; } h2 { font-size: 2.5rem; }
+            .welcome-container, .about-container, .contact-container { grid-template-columns: 1fr; text-align: center; }
+            .subtitle::after { display: none; }
+        }
+        @media (max-width:768px) {
+            h1{ font-size:2.8rem; } .nav-links{ display:none; }
+            .action-buttons{ flex-direction:column; align-items:center; }
+            .btn{ width:100%; max-width:280px; }
+            .projects-grid{ grid-template-columns:1fr; }
+            .footer-content{ grid-template-columns:1fr; text-align:center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Modal for certificate preview -->
+    <div id="certModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">Aneema<span>.</span></div>
+            <div class="nav-links">
+                <a href="#welcome">Home</a>
+                <a href="#about">About</a>
+                <a href="#certificates">Certificates</a>
+                <a href="#projects">Projects</a>
+                <a href="#skills">Skills</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="nav-buttons">
+                <a href="#contact" class="btn btn-primary">Get in touch</a>
+                <button id="theme-toggle" aria-label="toggle theme"><i class="fas fa-moon"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- WELCOME SECTION -->
+    <section id="welcome">
+        <div class="container">
+            <div class="welcome-container">
+                <div class="welcome-content">
+                    <span class="welcome-badge">👩‍💻 software engineer</span>
+                    <div class="title-container">
+                        <h2>Hi, I'm</h2>
+                        <h1>Aneema Rajapaksha</h1>
+                        <div class="subtitle"><span>BSc (Hons) Software Engineering · Undergraduate</span></div>
+                    </div>
+                    <p class="tagline">
+                        Seeking an internship where I can apply academic knowledge, develop industry skills, 
+                        and contribute to organizational goals. Passionate about full‑stack development 
+                        with hands‑on experience in Django, React Native, Node.js, and database systems.
+                    </p>
+                    <div class="action-buttons">
+                        <a href="#projects" class="btn btn-primary"><i class="fas fa-code"></i> projects</a>
+                        <a href="#contact" class="btn btn-secondary"><i class="fas fa-paper-plane"></i> contact</a>
+                        <a href="C:\Users\User\OneDrive\Desktop\SSD\Portfolio\ANEEMA_RAJAPAKSHA_CV.pdf" class="btn btn-outline" download><i class="fas fa-file-pdf"></i> resume</a>
+                    </div>
+                    <div style="margin-top: var(--space-md); display: flex; gap: var(--space-md); flex-wrap: wrap; justify-content: start;">
+                        <a href="mailto:rpaneema23@gmail.com" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center; gap: 5px; transition: 0.3s;" onmouseover="this.style.color='var(--primary-blue)'" onmouseout="this.style.color='inherit'">
+                            <i class="fas fa-envelope" style="color: var(--primary-blue);"></i> rpaneema23@gmail.com
+                        </a>
+                        <a href="tel:+94711489030" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center; gap: 5px; transition: 0.3s;" onmouseover="this.style.color='var(--primary-blue)'" onmouseout="this.style.color='inherit'">
+                            <i class="fas fa-phone-alt" style="color: var(--primary-blue);"></i> +94 71 148 9030
+                        </a>
+                        <a href="https://github.com/Aneema23" target="_blank" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center; gap: 5px; transition: 0.3s;" onmouseover="this.style.color='var(--primary-blue)'" onmouseout="this.style.color='inherit'">
+                            <i class="fab fa-github" style="color: var(--primary-blue);"></i> github.com/Aneema23
+                        </a>
+                        <a href="https://linkedin.com/in/aneema-rajapaksha" target="_blank" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center; gap: 5px; transition: 0.3s;" onmouseover="this.style.color='var(--primary-blue)'" onmouseout="this.style.color='inherit'">
+                            <i class="fab fa-linkedin" style="color: var(--primary-blue);"></i> aneema-rajapaksha
+                        </a>
+                    </div>
+                </div>
+                <div class="visualization-container">
+                    <div class="floating-cube">
+                        <div class="cube-face front"><i class="fab fa-python"></i></div>
+                        <div class="cube-face back"><i class="fas fa-database"></i></div>
+                        <div class="cube-face right"><i class="fab fa-js"></i></div>
+                        <div class="cube-face left"><i class="fab fa-react"></i></div>
+                        <div class="cube-face top"><i class="fas fa-code"></i></div>
+                        <div class="cube-face bottom"><i class="fab fa-java"></i></div>
+                    </div>
+                    <div class="orbiting-element orb-1"><i class="fab fa-react"></i></div>
+                    <div class="orbiting-element orb-2"><i class="fab fa-node"></i></div>
+                    <div class="orbiting-element orb-3"><i class="fas fa-database"></i></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about">
+        <div class="container">
+            <div class="section-header">
+                <h2><span class="gradient-text">About</span> me</h2>
+                <p class="section-subtitle">undergraduate · problem solver · tech enthusiast</p>
+            </div>
+            <div class="about-container">
+                <div class="about-image">
+                    <div class="image-frame">
+                        <img src="photo_3.png" alt="Aneema avatar">
+                    </div>
+                </div>
+                <div class="about-content">
+                    <h3>BSc (Hons) Software Engineering  Lanka Nippon BizTech Institute (2023–present)</h3>
+                    <p><strong>Education:</strong> GCE Advanced Level (Maths) Dharmapala College, Pannipitiya (2022) 
+                        <br>GCE Ordinary Level · Vidyakara Girl's School, Maharagama   (2019)</p>
+                    <p>I enjoy building efficient, user‑friendly applications using Django, Java, React Native and modern frameworks. My projects range from mobile apps to desktop and web systems, always focusing on clean code and real‑world impact.</p>
+                    <p><span class="highlight">Languages:</span> English, Sinhala, Japanese N5 (N4 reading) </p>
+                    <div class="stats-grid">
+                        <div class="stat-card"><div class="stat-number">6+</div><p>academic projects</p></div>
+                        <div class="stat-card"><div class="stat-number">12+</div><p>technologies</p></div>
+                        <div class="stat-card"><div class="stat-number">N4</div><p>Japanese (reading)</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CERTIFICATES SECTION -->
+    <section id="certificates">
+        <div class="container">
+            <div class="section-header">
+                <h2><span class="gradient-text">Certificates</span> & Achievements</h2>
+                <p class="section-subtitle">Continuous learning and professional development</p>
+            </div>
+            <div class="certificates-grid">
+                <!-- Certificate 1: Japanese N4 -->
+                <div class="cert-card" onclick="showCertificate('japanese')">
+                    <div class="cert-image">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <div class="cert-content">
+                        <h3 class="cert-title">Japanese Language Proficiency</h3>
+                        <p class="cert-issuer">Japan Foundation / JLPT</p>
+                        <p class="cert-date">N4 (Reading) · In Progress</p>
+                        <p>Completed N5 certification, currently studying for N4 level with focus on reading comprehension and conversation.</p>
+                        <div class="cert-skills">
+                            <span class="cert-skill-tag">Japanese N5</span>
+                            <span class="cert-skill-tag">N4 Reading</span>
+                            <span class="cert-skill-tag">Conversation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certificate 2: Full Stack Development -->
+                <div class="cert-card" onclick="showCertificate('fullstack', 'cer_1.png')">
+                    <div class="cert-image">
+                        <img src="cer_1.png" alt="Full Stack Development Certificate" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg);">
+                    </div>
+                    <div class="cert-content">
+                        <h3 class="cert-title">Full Stack Web Development</h3>
+                        <p class="cert-issuer">Lanka Nippon BizTech Institute</p>
+                        <p class="cert-date">2024 · Advanced Certification</p>
+                        <p>Comprehensive training in modern web development including React, Node.js, and database management.</p>
+                        <div class="cert-skills">
+                            <span class="cert-skill-tag">React</span>
+                            <span class="cert-skill-tag">Node.js</span>
+                            <span class="cert-skill-tag">MongoDB</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certificate 3: Database Design -->
+                <div class="cert-card" onclick="showCertificate('database', 'cer_2.png')">
+                    <div class="cert-image">
+                        <img src="cer_2.png" alt="Advanced Database Design Certificate" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg);">
+                    </div>
+                    <div class="cert-content">
+                        <h3 class="cert-title">Advanced Database Design</h3>
+                        <p class="cert-issuer">PostgreSQL Certification</p>
+                        <p class="cert-date">2024 · Professional Level</p>
+                        <p>Specialized training in database normalization, complex queries, and optimization techniques.</p>
+                        <div class="cert-skills">
+                            <span class="cert-skill-tag">PostgreSQL</span>
+                            <span class="cert-skill-tag">MySQL</span>
+                            <span class="cert-skill-tag">MongoDB</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certificate 4: Python/Django -->
+                <div class="cert-card" onclick="showCertificate('python')">
+                    <div class="cert-image">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <div class="cert-content">
+                        <h3 class="cert-title">Python Django Mastery</h3>
+                        <p class="cert-issuer">Django Framework Certification</p>
+                        <p class="cert-date">2024 · Project Based</p>
+                        <p>Completed intensive training in Django framework, REST APIs, and authentication systems.</p>
+                        <div class="cert-skills">
+                            <span class="cert-skill-tag">Django</span>
+                            <span class="cert-skill-tag">REST APIs</span>
+                            <span class="cert-skill-tag">JWT</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certificate 5: Mobile Development -->
+                <div class="cert-card" onclick="showCertificate('mobile')">
+                    <div class="cert-image">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="cert-content">
+                        <h3 class="cert-title">React Native Mobile Dev</h3>
+                        <p class="cert-issuer">Cross-Platform Certification</p>
+                        <p class="cert-date">2025 · Advanced</p>
+                        <p>Comprehensive training in building cross-platform mobile applications with React Native.</p>
+                        <div class="cert-skills">
+                            <span class="cert-skill-tag">React Native</span>
+                            <span class="cert-skill-tag">TypeScript</span>
+                            <span class="cert-skill-tag">Mobile UI/UX</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certificate 6: Software Engineering Fundamentals -->
+                <div class="cert-card" onclick="showCertificate('se')">
+                    <div class="cert-image">
+                        <i class="fas fa-code-branch"></i>
+                    </div>
+                    <div class="cert-content">
+                        <h3 class="cert-title">Software Engineering Core</h3>
+                        <p class="cert-issuer">University Program</p>
+                        <p class="cert-date">2023 · Foundation</p>
+                        <p>Fundamentals of software engineering, OOP, data structures, and algorithms.</p>
+                        <div class="cert-skills">
+                            <span class="cert-skill-tag">OOP</span>
+                            <span class="cert-skill-tag">Data Structures</span>
+                            <span class="cert-skill-tag">Algorithms</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+        
+    <!-- PROJECTS SECTION -->
+    <section id="projects">
+        <div class="container">
+            <div class="section-header">
+                <h2>Academic <span class="gradient-text">Projects</span></h2>
+                <p class="section-subtitle">full‑stack, mobile, desktop & database systems</p>
+            </div>
+            <div class="projects-grid">
+                <!-- Spice & Allice -->
+                <div class="project-card">
+                    <div class="project-image" style="background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px;">
+                        <i class="fas fa-shopping-bag" style="font-size: 3rem; color: white; opacity: 0.9;"></i>
+                        <span style="color: white; font-size: 0.85rem; opacity: 0.8; text-align: center;">Mobile E-Commerce</span>
+                    </div>
+                    <div class="project-content">
+                        <h3>Spice & Allice Mobile App</h3>
+                        <p>Cross‑platform product & order management. React Native + Node.js, PostgreSQL, JWT.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">React Native</span><span class="tech-tag">Node.js</span><span class="tech-tag">PostgreSQL</span><span class="tech-tag">TypeScript</span>
+                        </div>
+                        <p style="font-size:0.95rem"><i class="far fa-calendar-alt"></i> 11/2025 – present</p>
+                    </div>
+                </div>
+                <!-- Queue management -->
+                <div class="project-card">
+                    <div class="project-image" style="background: linear-gradient(135deg, #0066FF 0%, #00A8FF 100%); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px;">
+                        <i class="fas fa-tasks" style="font-size: 3rem; color: white; opacity: 0.9;"></i>
+                        <span style="color: white; font-size: 0.85rem; opacity: 0.8; text-align: center;">Queue System</span>
+                    </div>
+                    <div class="project-content">
+                        <h3>Bank Queue Management System (Django/Firebase)</h3>
+                        <p>Token generation, real‑time updates, role dashboards. Firebase Auth + Firestore.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Django</span><span class="tech-tag">Firebase</span><span class="tech-tag">JavaScript</span><span class="tech-tag">REST</span>
+                        </div>
+                        <p style="font-size:0.95rem">04/2025 – 10/2025</p>
+                    </div>
+                </div>
+                <!-- Salon PostgreSQL -->
+                <div class="project-card">
+                    <div class="project-image" style="background: linear-gradient(135deg, #D946EF 0%, #EC4899 100%); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px;">
+                        <i class="fas fa-spa" style="font-size: 3rem; color: white; opacity: 0.9;"></i>
+                        <span style="color: white; font-size: 0.85rem; opacity: 0.8; text-align: center;">Salon Scheduling</span>
+                    </div>
+                    <div class="project-content">
+                        <h3>Salon management – PostgreSQL</h3>
+                        <p>Normalized schema, appointment & staff schedules, complex queries.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">PostgreSQL</span><span class="tech-tag">SQL</span><span class="tech-tag">ERD</span>
+                        </div>
+                        <p style="font-size:0.95rem">04/2024 – 10/2025</p>
+                    </div>
+                </div>
+                <!-- Employee leave C# -->
+                <div class="project-card">
+                    <div class="project-image" style="background: linear-gradient(135deg, #10B981 0%, #14B8A6 100%); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px;">
+                        <i class="fas fa-calendar-check" style="font-size: 3rem; color: white; opacity: 0.9;"></i>
+                        <span style="color: white; font-size: 0.85rem; opacity: 0.8; text-align: center;">Leave Management</span>
+                    </div>
+                    <div class="project-content">
+                        <h3>Employee leave Management System (C#)</h3>
+                        <p>Desktop app with role‑based access, leave calc, SQL Server.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">C#</span><span class="tech-tag">.NET</span><span class="tech-tag">SQL Server</span><span class="tech-tag">WinForms</span>
+                        </div>
+                        <p style="font-size:0.95rem">10/2024 – 04/2025</p>
+                    </div>
+                </div>
+                <!-- Tea factory Laravel/Java -->
+                <div class="project-card">
+                    <div class="project-image" style="background: linear-gradient(135deg, #8B7355 0%, #D4A574 100%); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px;">
+                        <i class="fas fa-leaf" style="font-size: 3rem; color: white; opacity: 0.9;"></i>
+                        <span style="color: white; font-size: 0.85rem; opacity: 0.8; text-align: center;">Factory Management</span>
+                    </div>
+                    <div class="project-content">
+                        <h3>Tea factory management</h3>
+                        <p>Laravel + Java modules for production, supplier & payments.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Laravel</span><span class="tech-tag">Java</span><span class="tech-tag">MySQL</span><span class="tech-tag">MVC</span>
+                        </div>
+                        <p style="font-size:0.95rem">05/2024 – 10/2024</p>
+                    </div>
+                </div>
+                <!-- Clinical C++ -->
+                <div class="project-card">
+                    <div class="project-image" style="background: linear-gradient(135deg, #06B6D4 0%, #0EA5E9 100%); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px;">
+                        <i class="fas fa-hospital" style="font-size: 3rem; color: white; opacity: 0.9;"></i>
+                        <span style="color: white; font-size: 0.85rem; opacity: 0.8; text-align: center;">Healthcare System</span>
+                    </div>
+                    <div class="project-content">
+                        <h3>Clinical Management System (C++)</h3>
+                        <p>Console OOP, patient records, billing, file handling.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">C++</span><span class="tech-tag">OOP</span><span class="tech-tag">File I/O</span>
+                        </div>
+                        <p style="font-size:0.95rem">10/2023 – 03/2024</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS SECTION -->
+    <section id="skills">
+        <div class="container">
+            <div class="section-header">
+                <h2>Technical <span class="gradient-text">Skills</span></h2>
+                <p class="section-subtitle">programming, frameworks, databases, languages & office productivity</p>
+            </div>
+            <div class="skills-container">
+                <div class="skill-category">
+                    <h3><i class="fas fa-code"></i> Languages & Tools</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">C</span><span class="skill-item">C++</span><span class="skill-item">C#</span>
+                        <span class="skill-item">Python</span><span class="skill-item">Java</span><span class="skill-item">Git</span>
+                        <span class="skill-item">VS Code</span><span class="skill-item">.NET</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-globe"></i> Web / Frameworks</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">HTML/CSS</span><span class="skill-item">JavaScript</span><span class="skill-item">Django</span>
+                        <span class="skill-item">Node.js</span><span class="skill-item">Express</span><span class="skill-item">React Native</span>
+                        <span class="skill-item">Laravel</span><span class="skill-item">TypeScript</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-database"></i> Databases & Cloud</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">PostgreSQL</span><span class="skill-item">MySQL</span><span class="skill-item">MongoDB</span>
+                        <span class="skill-item">Firebase</span><span class="skill-item">Firestore</span><span class="skill-item">SQL Server</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-file-alt"></i> Office Productivity</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">MS Word</span>
+                        <span class="skill-item">MS Excel</span>
+                        <span class="skill-item">MS PowerPoint</span>
+                        <span class="skill-item">LibreOffice Writer</span>
+                        <span class="skill-item">LibreOffice Calc</span>
+                        <span class="skill-item">LibreOffice Impress</span>
+                        <span class="skill-item">Document Formatting</span>
+                        <span class="skill-item">Spreadsheet Analysis</span>
+                        <span class="skill-item">Presentation Design</span>
+                    </div>
+                </div>
+                
+            </div>
+            <br><br>
+            <div class="section-header">
+                    <h2><span class="gradient-text">Soft Skills</span></h2>
+                    <div class="skill-category">
+                        <h3><i class="fas fa-heart"></i> soft skills</h3>
+                        <div class="skill-list">
+                            <span class="skill-item">Communication</span><span class="skill-item">Problem solving</span>
+                            <span class="skill-item">Team work</span><span class="skill-item">Problem analysis</span>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION with EmailJS -->
+    <section id="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>Get in <span class="gradient-text">touch</span></h2>
+                <p class="section-subtitle">references & contact</p>
+            </div>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <div class="contact-icon"><i class="fas fa-user-tie"></i></div>
+                        <h4>Mr. Mewan Jayathilake</h4>
+                        <p>Lecturer, LnBTI<br>mewan@edu.lnbti.lk<br>+94 76 641 5188</p>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon"><i class="fas fa-user-graduate"></i></div>
+                        <h4>Ms. Maheshika Dayananda</h4>
+                        <p>Lecturer, LnBTI<br>maheshika@edu.lnbti.lk<br>+94 71 349 4623</p>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon"><i class="fas fa-address-card"></i></div>
+                        <h4>Direct</h4>
+                        <p>rpaneema23@gmail.com<br>+94 71 148 9030<br>github.com/Aneema23</p>
+                    </div>
+                </div>
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label>Name *</label>
+                        <input type="text" id="name" placeholder="Your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <input type="text" id="subject" placeholder="What's this about?">
+                    </div>
+                    <div class="form-group">
+                        <label>Message *</label>
+                        <textarea id="message" rows="5" placeholder="Hello Aneema, let's talk about..." required></textarea>
+                    </div>
+                    <div id="form-status" class="form-status"></div>
+                    <button type="submit" class="btn btn-primary" id="submit-btn">
+                        <i class="fas fa-paper-plane"></i> send message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo logo">Aneema<span>.</span></div>
+                    <p>BSc (Hons) Software Engineering undergraduate · aspiring full‑stack developer</p>
+                    <div class="social-links">
+                        <a href="https://github.com/Aneema23" target="_blank" class="social-link" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/aneema-rajapaksha" target="_blank" class="social-link" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="mailto:rpaneema23@gmail.com" class="social-link" aria-label="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4>explore</h4>
+                    <div style="display:flex; flex-direction:column; gap:var(--space-sm);">
+                        <a href="#welcome" class="btn btn-outline" style="text-align:left;">home</a>
+                        <a href="#certificates" class="btn btn-outline" style="text-align:left;">certificates</a>
+                        <a href="#projects" class="btn btn-outline" style="text-align:left;">projects</a>
+                        <a href="#skills" class="btn btn-outline" style="text-align:left;">skills</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>core tech</h4>
+                    <p>React Native • Node.js • Django • PostgreSQL • C# • Python • Java • Firebase</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 Aneema Rajapaksha · built with ⚡</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize EmailJS (you need to replace these with your actual credentials)
+        (function() {
+            emailjs.init("YOUR_USER_ID"); // Replace with your EmailJS user ID
+        })();
+
+        // Certificate modal functions
+        const modal = document.getElementById('certModal');
+        const modalContent = document.getElementById('modalContent');
+
+        function showCertificate(certId, imageFile) {
+            let content = '';
+            if (imageFile) {
+                // If an image file is provided, display it
+                content = `
+                    <img src="${imageFile}" alt="Certificate" style="width: 100%; height: auto; max-height: 600px; object-fit: contain; border-radius: var(--radius-md); margin-bottom: var(--space-lg);">
+                    <div class="cert-preview-details" style="text-align: center;">
+                        <p style="color: var(--text-muted); margin-top: var(--space-md);">Click the image to enlarge or close the modal to continue</p>
+                    </div>
+                `;
+            } else {
+                // Otherwise, show the original text content
+            switch(certId) {
+                case 'japanese':
+                    content = `
+                        <div class="cert-preview-image">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <div class="cert-preview-details">
+                            <h3>Japanese Language Proficiency N4</h3>
+                            <p><strong>Issuer:</strong> Japan Foundation / JLPT</p>
+                            <p><strong>Date:</strong> In Progress (Expected 2025)</p>
+                            <p><strong>Description:</strong> Currently pursuing N4 certification with focus on reading comprehension, grammar, and conversation skills. Completed N5 level with distinction.</p>
+                            <p><strong>Skills Acquired:</strong></p>
+                            <ul style="color: var(--text-muted); margin-left: 20px;">
+                                <li>Reading comprehension (N4 level)</li>
+                                <li>Basic conversation and grammar</li>
+                                <li>Kanji (approx. 300 characters)</li>
+                                <li>Listening comprehension</li>
+                            </ul>
+                        </div>
+                    `;
+                    break;
+                case 'fullstack':
+                    content = `
+                        <div class="cert-preview-image">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <div class="cert-preview-details">
+                            <h3>Full Stack Web Development</h3>
+                            <p><strong>Issuer:</strong> Lanka Nippon BizTech Institute</p>
+                            <p><strong>Date:</strong> December 2024</p>
+                            <p><strong>Description:</strong> Comprehensive certification covering modern web development technologies and best practices.</p>
+                            <p><strong>Skills Acquired:</strong></p>
+                            <ul style="color: var(--text-muted); margin-left: 20px;">
+                                <li>Frontend development with React.js</li>
+                                <li>Backend development with Node.js/Express</li>
+                                <li>Database integration (MongoDB, PostgreSQL)</li>
+                                <li>RESTful API design</li>
+                                <li>Authentication & authorization</li>
+                            </ul>
+                        </div>
+                    `;
+                    break;
+                case 'database':
+                    content = `
+                        <div class="cert-preview-image">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="cert-preview-details">
+                            <h3>Advanced Database Design</h3>
+                            <p><strong>Issuer:</strong> PostgreSQL Certification Program</p>
+                            <p><strong>Date:</strong> August 2024</p>
+                            <p><strong>Description:</strong> Advanced training in database architecture, optimization, and management.</p>
+                            <p><strong>Skills Acquired:</strong></p>
+                            <ul style="color: var(--text-muted); margin-left: 20px;">
+                                <li>Database normalization (1NF-3NF)</li>
+                                <li>Complex SQL queries and joins</li>
+                                <li>Indexing and performance tuning</li>
+                                <li>ER diagram design</li>
+                                <li>Transaction management</li>
+                            </ul>
+                        </div>
+                    `;
+                    break;
+                case 'python':
+                    content = `
+                        <div class="cert-preview-image">
+                            <i class="fab fa-python"></i>
+                        </div>
+                        <div class="cert-preview-details">
+                            <h3>Python Django Mastery</h3>
+                            <p><strong>Issuer:</strong> Django Framework Certification</p>
+                            <p><strong>Date:</strong> October 2024</p>
+                            <p><strong>Description:</strong> Project-based certification focusing on Django framework and web applications.</p>
+                            <p><strong>Skills Acquired:</strong></p>
+                            <ul style="color: var(--text-muted); margin-left: 20px;">
+                                <li>Django ORM and models</li>
+                                <li>Class-based views</li>
+                                <li>REST API development with DRF</li>
+                                <li>JWT authentication</li>
+                                <li>Django template language</li>
+                            </ul>
+                        </div>
+                    `;
+                    break;
+                case 'mobile':
+                    content = `
+                        <div class="cert-preview-image">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="cert-preview-details">
+                            <h3>React Native Mobile Development</h3>
+                            <p><strong>Issuer:</strong> Cross-Platform Certification</p>
+                            <p><strong>Date:</strong> January 2025</p>
+                            <p><strong>Description:</strong> Advanced training in building cross-platform mobile applications.</p>
+                            <p><strong>Skills Acquired:</strong></p>
+                            <ul style="color: var(--text-muted); margin-left: 20px;">
+                                <li>React Native components and APIs</li>
+                                <li>TypeScript integration</li>
+                                <li>Navigation and state management</li>
+                                <li>Mobile UI/UX principles</li>
+                                <li>Native module integration</li>
+                            </ul>
+                        </div>
+                    `;
+                    break;
+                case 'se':
+                    content = `
+                        <div class="cert-preview-image">
+                            <i class="fas fa-code-branch"></i>
+                        </div>
+                        <div class="cert-preview-details">
+                            <h3>Software Engineering Fundamentals</h3>
+                            <p><strong>Issuer:</strong> Lanka Nippon BizTech Institute</p>
+                            <p><strong>Date:</strong> December 2023</p>
+                            <p><strong>Description:</strong> Foundation certification covering core software engineering principles.</p>
+                            <p><strong>Skills Acquired:</strong></p>
+                            <ul style="color: var(--text-muted); margin-left: 20px;">
+                                <li>Object-Oriented Programming</li>
+                                <li>Data structures and algorithms</li>
+                                <li>Software development lifecycle</li>
+                                <li>Version control with Git</li>
+                                <li>Testing and debugging</li>
+                            </ul>
+                        </div>
+                    `;
+                    break;
+            }
+            }
+            modalContent.innerHTML = content;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // EmailJS form submission
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> sending...';
+            submitBtn.disabled = true;
+
+            // Get form data
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value || 'New message from portfolio';
+            const message = document.getElementById('message').value;
+
+            // Prepare template parameters
+            const templateParams = {
+                from_name: name,
+                from_email: email,
+                subject: subject,
+                message: message,
+                to_name: 'Aneema'
+            };
+
+            // Send email using EmailJS
+            // REPLACE THESE WITH YOUR ACTUAL CREDENTIALS:
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+                .then(function(response) {
+                    // Success
+                    document.getElementById('form-status').className = 'form-status success';
+                    document.getElementById('form-status').innerHTML = '✓ Message sent successfully! I\'ll get back to you soon.';
+                    document.getElementById('contact-form').reset();
+                    
+                    // Clear success message after 5 seconds
+                    setTimeout(() => {
+                        document.getElementById('form-status').className = 'form-status';
+                    }, 5000);
+                }, function(error) {
+                    // Error
+                    document.getElementById('form-status').className = 'form-status error';
+                    document.getElementById('form-status').innerHTML = '✗ Failed to send. Please try again or email me directly at rpaneema23@gmail.com';
+                    console.error('EmailJS error:', error);
+                })
+                .finally(function() {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                });
+        });
+
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const icon = themeToggle.querySelector('i');
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        } else {
+            document.body.classList.remove('light-mode');
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            
+            if (document.body.classList.contains('light-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'light');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const offset = 80;
+                    const elementPosition = targetElement.offsetTop - offset;
+                    window.scrollTo({
+                        top: elementPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Cube animation
+        const cube = document.querySelector('.floating-cube');
+        if (cube) {
+            let deg = 0;
+            function rotateCube() {
+                deg += 0.5;
+                cube.style.transform = `rotateX(${deg}deg) rotateY(${deg}deg)`;
+                requestAnimationFrame(rotateCube);
+            }
+            rotateCube();
+        }
+
+        // Intersection observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.project-card, .skill-category, .contact-card, .cert-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s';
+            observer.observe(el);
+        });
+
+        // Update copyright year
+        const yearElement = document.querySelector('.copyright p');
+        if (yearElement) {
+            yearElement.innerHTML = yearElement.innerHTML.replace('2025', new Date().getFullYear());
+        }
+    </script>
+</body>
+</html>
