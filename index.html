@@ -56,11 +56,23 @@
             --text-light: #0D1117;
             --text-muted: #57606A;
             --border-dark: #D8DEE4;
+            --primary-blue: #005CC5;
+            --primary-hover: #0366D6;
+            --teal: #28A745;
+            --teal-hover: #218838;
+            --accent-purple: #6F42C1;
+            --accent-pink: #D73A49;
+            --gradient-start: #005CC5;
+            --gradient-middle: #6F42C1;
+            --gradient-end: #D73A49;
+            --success: #28A745;
+            --warning: #FFD33D;
+            --error: #D73A49;
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
             --shadow-md: 0 4px 8px rgba(0,0,0,0.12);
             --shadow-lg: 0 12px 20px rgba(0,0,0,0.15);
             --shadow-xl: 0 24px 40px rgba(0,0,0,0.18);
-            --glow: 0 0 30px rgba(88,166,255,0.15);
+            --glow: 0 0 30px rgba(0,92,197,0.15);
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -79,6 +91,11 @@
                         radial-gradient(circle at 40% 40%, rgba(255,123,114,0.04) 0%, transparent 50%);
             z-index: -1;
             pointer-events: none;
+        }
+        .light-mode body::before {
+            background: radial-gradient(circle at 20% 80%, rgba(0,92,197,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(111,66,193,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(215,58,73,0.03) 0%, transparent 50%);
         }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-md); }
         section { padding: var(--space-xxl) 0; }
@@ -111,8 +128,9 @@
             border-bottom: 1px solid rgba(88,166,255,0.1);
             z-index: 1000; padding: var(--space-sm) 0; transition: all 0.3s;
         }
-        .light-mode .navbar { background: rgba(255,255,255,0.85); border-bottom-color: rgba(0,0,0,0.08); }
+        .light-mode .navbar { background: rgba(255,255,255,0.85); border-bottom-color: rgba(0,92,197,0.1); }
         .navbar.scrolled { padding: var(--space-xs) 0; background: rgba(13,17,23,0.95); box-shadow: var(--shadow-lg); }
+        .light-mode .navbar.scrolled { background: rgba(255,255,255,0.95); }
         .nav-container { display: flex; justify-content: space-between; align-items: center; }
         .logo {
             font-weight: 800; font-size: 1.8rem;
@@ -156,6 +174,7 @@
             background: transparent; color: var(--text-light); border: 2px solid rgba(88,166,255,0.35);
         }
         .btn-secondary:hover { background: rgba(88,166,255,0.12); border-color: var(--primary-blue); transform: translateY(-3px); }
+        .light-mode .btn-secondary:hover { background: rgba(0,92,197,0.12); }
         .btn-outline {
             background: transparent; color: var(--text-muted); border: 1px solid var(--border-dark);
         }
@@ -167,6 +186,7 @@
             cursor: pointer; color: var(--text-muted); transition: 0.3s;
         }
         #theme-toggle:hover { border-color: var(--primary-blue); color: var(--primary-blue); transform: rotate(15deg); background: rgba(88,166,255,0.08); }
+        .light-mode #theme-toggle:hover { background: rgba(0,92,197,0.08); }
 
         /* welcome cube / viz */
         .visualization-container { position: relative; height: 500px; display: flex; align-items: center; justify-content: center; }
@@ -176,6 +196,10 @@
             background: linear-gradient(135deg, rgba(88,166,255,0.15), rgba(210,168,255,0.15));
             border: 1px solid rgba(88,166,255,0.4); border-radius: var(--radius-md); backdrop-filter: blur(10px);
             display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: var(--primary-blue);
+        }
+        .light-mode .cube-face {
+            background: linear-gradient(135deg, rgba(0,92,197,0.1), rgba(111,66,193,0.1));
+            border: 1px solid rgba(0,92,197,0.3);
         }
         .front { transform: translateZ(150px); } .back { transform: rotateY(180deg) translateZ(150px); }
         .right { transform: rotateY(90deg) translateZ(150px); } .left { transform: rotateY(-90deg) translateZ(150px); }
@@ -579,20 +603,20 @@
                     </div>
                 </div>
 
-                <!-- Certificate 2: Full Stack Development -->
-                <div class="cert-card" onclick="showCertificate('fullstack', 'cer_1.png')">
+                <!-- Certificate 2: Photography Workshop -->
+                <div class="cert-card" onclick="showCertificate('photography', 'cer_1.png')">
                     <div class="cert-image">
-                        <img src="cer_1.png" alt="Full Stack Development Certificate" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg);">
+                        <img src="cer_1.png" alt="Photography Workshop Certificate" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg);">
                     </div>
                     <div class="cert-content">
-                        <h3 class="cert-title">Full Stack Web Development</h3>
+                        <h3 class="cert-title">Photography Workshop</h3>
                         <p class="cert-issuer">Lanka Nippon BizTech Institute</p>
-                        <p class="cert-date">2024 · Advanced Certification</p>
-                        <p>Comprehensive training in modern web development including React, Node.js, and database management.</p>
+                        <p class="cert-date">2024 · Professional Certification</p>
+                        <p>Advanced training in digital photography and creative design tools. Mastered professional image editing, graphic design, and photography workflow optimization.</p>
                         <div class="cert-skills">
-                            <span class="cert-skill-tag">React</span>
-                            <span class="cert-skill-tag">Node.js</span>
-                            <span class="cert-skill-tag">MongoDB</span>
+                            <span class="cert-skill-tag">Photoshop</span>
+                            <span class="cert-skill-tag">Illustrator</span>
+                            <span class="cert-skill-tag">Lightroom</span>
                         </div>
                     </div>
                 </div>
@@ -613,61 +637,61 @@
                             <span class="cert-skill-tag">MongoDB</span>
                         </div>
                     </div>
-                </div>
-
-                <!-- Certificate 4: Python/Django -->
-                <div class="cert-card" onclick="showCertificate('python')">
+                </div>  
+                
+                <!-- Certificate 4: Dean's list -->
+                <div class="cert-card" onclick="showCertificate('deanslist', 'cer_3.jpeg')">
                     <div class="cert-image">
-                        <i class="fab fa-python"></i>
+                        <img src="cer_3.jpeg" alt="Dean's List Certificate" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg);">
                     </div>
                     <div class="cert-content">
-                        <h3 class="cert-title">Python Django Mastery</h3>
-                        <p class="cert-issuer">Django Framework Certification</p>
-                        <p class="cert-date">2024 · Project Based</p>
-                        <p>Completed intensive training in Django framework, REST APIs, and authentication systems.</p>
+                        <h3 class="cert-title">Dean's List</h3>
+                        <p class="cert-issuer">Lanka Nippon BizTech Institute</p>
+                        <p class="cert-date">2024/2025 · Academic Excellence</p>
+                        <p>Recognized for outstanding academic performance, maintaining a high GPA and demonstrating excellence in coursework.</p>
                         <div class="cert-skills">
-                            <span class="cert-skill-tag">Django</span>
-                            <span class="cert-skill-tag">REST APIs</span>
-                            <span class="cert-skill-tag">JWT</span>
+                            <span class="cert-skill-tag">Academic Excellence</span>
+                            <span class="cert-skill-tag">Leadership</span>
+                            <span class="cert-skill-tag">Dedication</span>
                         </div>
                     </div>
-                </div>
+                </div> 
 
-                <!-- Certificate 5: Mobile Development -->
-                <div class="cert-card" onclick="showCertificate('mobile')">
+                <!-- Certificate 5: Faculty Award -->
+                <div class="cert-card" onclick="showCertificate('facultyaward', 'cer_4.jpeg')">
                     <div class="cert-image">
-                        <i class="fas fa-mobile-alt"></i>
+                        <img src="cer_4.jpeg" alt="Faculty Award Certificate" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg);">
                     </div>
                     <div class="cert-content">
-                        <h3 class="cert-title">React Native Mobile Dev</h3>
-                        <p class="cert-issuer">Cross-Platform Certification</p>
-                        <p class="cert-date">2025 · Advanced</p>
-                        <p>Comprehensive training in building cross-platform mobile applications with React Native.</p>
+                        <h3 class="cert-title">Faculty Award</h3>
+                        <p class="cert-issuer">Lanka Nippon BizTech Institute</p>
+                        <p class="cert-date">2024/2025 · Outstanding Achievement</p>
+                        <p>Awarded by faculty for exceptional performance, innovation, and contribution to academic excellence in software engineering.</p>
                         <div class="cert-skills">
-                            <span class="cert-skill-tag">React Native</span>
-                            <span class="cert-skill-tag">TypeScript</span>
-                            <span class="cert-skill-tag">Mobile UI/UX</span>
+                            <span class="cert-skill-tag">Innovation</span>
+                            <span class="cert-skill-tag">Excellence</span>
+                            <span class="cert-skill-tag">Leadership</span>
                         </div>
                     </div>
-                </div>
+                </div> 
 
-                <!-- Certificate 6: Software Engineering Fundamentals -->
-                <div class="cert-card" onclick="showCertificate('se')">
+                <!-- Certificate 6: IOT -->
+                <div class="cert-card" onclick="showCertificate('iot', 'cer_5.jpeg')">
                     <div class="cert-image">
-                        <i class="fas fa-code-branch"></i>
+                        <img src="cer_5.jpeg" alt="Introduction to IoT Certificate" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg);">
                     </div>
                     <div class="cert-content">
-                        <h3 class="cert-title">Software Engineering Core</h3>
-                        <p class="cert-issuer">University Program</p>
-                        <p class="cert-date">2023 · Foundation</p>
-                        <p>Fundamentals of software engineering, OOP, data structures, and algorithms.</p>
+                        <h3 class="cert-title">Introduction to IoT</h3>
+                        <p class="cert-issuer">Cisco Networking Academy</p>
+                        <p class="cert-date">2021 · Beginner Level</p>
+                        <p>Comprehensive introduction to Internet of Things concepts, including sensors, connectivity, data processing, and IoT applications.</p>
                         <div class="cert-skills">
-                            <span class="cert-skill-tag">OOP</span>
-                            <span class="cert-skill-tag">Data Structures</span>
-                            <span class="cert-skill-tag">Algorithms</span>
+                            <span class="cert-skill-tag">IoT</span>
+                            <span class="cert-skill-tag">Sensors</span>
+                            <span class="cert-skill-tag">Arduino</span>
                         </div>
                     </div>
-                </div>
+                </div> 
             </div>
         </div>
     </section>
@@ -967,23 +991,23 @@
                         </div>
                     `;
                     break;
-                case 'fullstack':
+                case 'photography':
                     content = `
                         <div class="cert-preview-image">
-                            <i class="fas fa-layer-group"></i>
+                            <i class="fas fa-camera"></i>
                         </div>
                         <div class="cert-preview-details">
-                            <h3>Full Stack Web Development</h3>
+                            <h3>Photography Workshop</h3>
                             <p><strong>Issuer:</strong> Lanka Nippon BizTech Institute</p>
                             <p><strong>Date:</strong> December 2024</p>
-                            <p><strong>Description:</strong> Comprehensive certification covering modern web development technologies and best practices.</p>
+                            <p><strong>Description:</strong> Advanced training in digital photography and creative design. Comprehensive certification in professional image editing, graphic design, and photography workflow optimization.</p>
                             <p><strong>Skills Acquired:</strong></p>
                             <ul style="color: var(--text-muted); margin-left: 20px;">
-                                <li>Frontend development with React.js</li>
-                                <li>Backend development with Node.js/Express</li>
-                                <li>Database integration (MongoDB, PostgreSQL)</li>
-                                <li>RESTful API design</li>
-                                <li>Authentication & authorization</li>
+                                <li>Adobe Photoshop - advanced editing and manipulation</li>
+                                <li>Adobe Illustrator - graphic design and vector creation</li>
+                                <li>Adobe Lightroom - photo organization and batch processing</li>
+                                <li>Color grading and enhancement techniques</li>
+                                <li>Professional workflow and portfolio development</li>
                             </ul>
                         </div>
                     `;
